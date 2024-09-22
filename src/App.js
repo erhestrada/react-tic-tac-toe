@@ -10,7 +10,7 @@ export default function Game() {
     <div className="game">
       <div className="game-board">
         <Board />
-      </div>"
+      </div>
       <div className="game-info">
         <ol>game-info</ol>
       </div>
