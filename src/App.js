@@ -1,13 +1,30 @@
 import { useState } from 'react';
 
+// Square child component
 function Square({value, onSquareClick}) {
   return <button className="square" onClick={onSquareClick}>{value}</button>;
 }
 
-export default function Board() {
+export default function Game() {
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board />
+      </div>"
+      <div className="game-info">
+        <ol>game-info</ol>
+      </div>
+    </div>
+  );
+}
+
+// Board parent component
+function Board() {
+  // states
   const [xIsNext, setXisNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
 
+  // click behavior
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {
       return;
@@ -26,15 +43,17 @@ export default function Board() {
 
   }
 
+  // status stuff
   let status;
   const winner = calculateWinner(squares);
-
+  
   if (winner) {
     status = "Winner: " + winner;
   } else {
     status = "Next player: " + (xIsNext ? "X": "O");
   }
 
+  // returning the display
   return (<>
     <div className="status">{status}</div>
     <div className="board-row">
