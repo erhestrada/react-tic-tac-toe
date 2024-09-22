@@ -6,10 +6,21 @@ function Square({value, onSquareClick}) {
 }
 
 export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+
+  //last entry in history e.g. 1 entry in history currentSquares = history[0]
+  const currentSquares = history[history.length-1];
+
+  function handlePlay(nextSquares) {
+    setHistory([...history, nextSquares]);
+    setXIsNext(!xIsNext);
+  }
+
   return (
     <div className="game">
       <div className="game-board">
-        <Board />
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
         <ol>game-info</ol>
@@ -19,14 +30,14 @@ export default function Game() {
 }
 
 // Board parent component
-function Board() {
+function Board({ xIsNext, squares, onPlay }) {
   // states
-  const [xIsNext, setXisNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null));
+  //const [xIsNext, setXisNext] = useState(true);
+  //const [squares, setSquares] = useState(Array(9).fill(null));
 
   // click behavior
   function handleClick(i) {
-    if (squares[i] || calculateWinner(squares)) {
+    if (calculateWinner(squares) || squares[i]) {
       return;
     }
 
@@ -38,8 +49,9 @@ function Board() {
       nextSquares[i] = "O";
     }
 
-    setSquares(nextSquares);
-    setXisNext(!xIsNext);
+    onPlay(nextSquares);
+    //setSquares(nextSquares);
+    //setXisNext(!xIsNext);
 
   }
 
